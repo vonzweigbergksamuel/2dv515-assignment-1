@@ -34,7 +34,8 @@ export function calculateEuclideanDistance(
 		return 0;
 	}
 
-	const distance = Math.sqrt(sumSquareDiff);
+	// const distance = Math.sqrt(sumSquareDiff);
+	const distance = sumSquareDiff;
 	return 1 / (1 + distance);
 }
 

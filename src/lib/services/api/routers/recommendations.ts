@@ -10,7 +10,7 @@ export const recommendationsRouter = {
 		.route({ method: "GET" })
 		.output(z.object({ movies: movieSchema.array() }))
 		.handler(async () => {
-			const firstUser = 6;
+			const firstUser = 7;
 			const users = (await getParsedUsers()).filter((user) => {
 				return user.userId !== firstUser;
 			});
@@ -20,6 +20,7 @@ export const recommendationsRouter = {
 
 			for (const { userId } of users) {
 				const similarity = getEuclideanSimilarity(allRatings, firstUser, userId);
+				console.log(`${userId} similarity with Toby(7)`, similarity);
 				similarityList.push({
 					userId,
 					similarity
