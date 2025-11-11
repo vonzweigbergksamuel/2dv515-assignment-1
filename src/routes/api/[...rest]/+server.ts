@@ -1,3 +1,4 @@
+import { LoggingHandlerPlugin } from "@orpc/experimental-pino";
 import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { onError } from "@orpc/server";
@@ -5,21 +6,21 @@ import { CORSPlugin } from "@orpc/server/plugins";
 import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 import type { RequestHandler } from "@sveltejs/kit";
 import { appRouter } from "$lib/services/api/routers";
-import { LoggingHandlerPlugin } from "@orpc/experimental-pino";
 import pino from "pino";
 
-const logger = pino()
+const logger = pino();
 
 const handler = new OpenAPIHandler(appRouter, {
 	plugins: [
 		new CORSPlugin(),
-		new OpenAPIReferencePlugin({ 
-			schemaConverters: [new ZodToJsonSchemaConverter()] }),
+		new OpenAPIReferencePlugin({
+			schemaConverters: [new ZodToJsonSchemaConverter()]
+		}),
 		new LoggingHandlerPlugin({
 			logger,
-			generateId: () => crypto.randomUUID(),
-			logRequestResponse: true,
-			logRequestAbort: true,
+			generateId: () => crypto.randomUUID()
+			// logRequestResponse: true,
+			// logRequestAbort: true,
 		})
 	],
 	interceptors: [

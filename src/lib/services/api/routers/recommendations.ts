@@ -1,3 +1,4 @@
+import { parseMovies } from "$lib/services/parsers/movies.parser";
 import z from "zod";
 import { publicProcedure } from "..";
 
@@ -6,6 +7,7 @@ export const recommendationsRouter = {
 		.route({ method: "GET" })
 		.output(z.object({ message: z.string() }))
 		.handler(async () => {
+			parseMovies();
 			return { message: "Hello World" };
 		})
 };
