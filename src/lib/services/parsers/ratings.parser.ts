@@ -14,7 +14,7 @@ export const getParsedRatings = async (): Promise<Rating[]> => {
 	const ratings: Rating[] = [];
 
 	return new Promise((resolve, reject) => {
-		fs.createReadStream(path.resolve("datasets", "movies", "ratings.csv"))
+		fs.createReadStream(path.resolve("datasets", "movies", "ratings.example.csv"))
 			.pipe(csv.parse({ headers: true, delimiter: ";" }))
 			.on("error", (error) => reject(error))
 			.on("data", (row: { UserId: string; MovieId: string; Rating: string }) => {
