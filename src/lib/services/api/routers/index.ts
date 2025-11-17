@@ -1,8 +1,10 @@
 import type { RouterClient } from "@orpc/server";
 import { recommendationsRouter } from "./recommendations";
+import { usersRouter } from "./users";
 
 export const appRouter = {
-	...recommendationsRouter
+	...recommendationsRouter,
+	...usersRouter
 };
 
 export type AppRouter = typeof appRouter;
