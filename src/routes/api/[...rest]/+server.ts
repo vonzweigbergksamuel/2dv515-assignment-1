@@ -2,6 +2,7 @@ import { LoggingHandlerPlugin } from "@orpc/experimental-pino";
 import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { onError } from "@orpc/server";
+import { RPCHandler } from "@orpc/server/fetch";
 import { CORSPlugin } from "@orpc/server/plugins";
 import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 import type { RequestHandler } from "@sveltejs/kit";
@@ -10,7 +11,7 @@ import pino from "pino";
 
 const logger = pino();
 
-const handler = new OpenAPIHandler(appRouter, {
+const openApiHandler = new OpenAPIHandler(appRouter, {
 	plugins: [
 		new CORSPlugin(),
 		new OpenAPIReferencePlugin({
@@ -18,9 +19,9 @@ const handler = new OpenAPIHandler(appRouter, {
 		}),
 		new LoggingHandlerPlugin({
 			logger,
-			generateId: () => crypto.randomUUID()
-			// logRequestResponse: true,
-			// logRequestAbort: true,
+			generateId: () => crypto.randomUUID(),
+			logRequestResponse: true,
+			logRequestAbort: true
 		})
 	],
 	interceptors: [
@@ -30,11 +31,29 @@ const handler = new OpenAPIHandler(appRouter, {
 	]
 });
 
+const rpcHandler = new RPCHandler(appRouter, {
+	plugins: [
+		new LoggingHandlerPlugin({
+			logger,
+			generateId: () => crypto.randomUUID(),
+			logRequestResponse: true,
+			logRequestAbort: true
+		})
+	]
+});
+
 const handle: RequestHandler = async ({ request }) => {
-	const { response } = await handler.handle(request, {
+	let { response } = await openApiHandler.handle(request, {
 		prefix: "/api",
-		context: {} // Provide initial context if needed
+		context: {}
 	});
+
+	if (!response) {
+		({ response } = await rpcHandler.handle(request, {
+			prefix: "/api",
+			context: {}
+		}));
+	}
 
 	return response ?? new Response("Not Found", { status: 404 });
 };
