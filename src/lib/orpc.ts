@@ -1,6 +1,7 @@
 import { createORPCClient } from "@orpc/client";
 import { RPCLink } from "@orpc/client/fetch";
 import type { RouterClient } from "@orpc/server";
+import { createORPCSvelteQueryUtils } from "@orpc/svelte-query";
 import type { appRouter, AppRouterClient } from "./services/api/routers";
 
 declare global {
@@ -17,4 +18,6 @@ const link = new RPCLink({
 	}
 });
 
-export const client: AppRouterClient = globalThis.$client ?? createORPCClient(link);
+const client: AppRouterClient = globalThis.$client ?? createORPCClient(link);
+
+export const orpc = createORPCSvelteQueryUtils(client);

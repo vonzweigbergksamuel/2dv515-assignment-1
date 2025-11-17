@@ -43,7 +43,9 @@
 		"@orpc/experimental-pino": "^1.11.1",
 		"@orpc/openapi": "^1.11.1",
 		"@orpc/server": "^1.11.1",
+		"@orpc/svelte-query": "^1.11.3",
 		"@orpc/zod": "^1.11.1",
+		"@tanstack/svelte-query": "^6.0.8",
 		"fast-csv": "^5.0.5",
 		"pino": "^10.1.0",
 		"zod": "^4.1.12"
