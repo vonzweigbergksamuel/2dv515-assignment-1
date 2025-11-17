@@ -23,8 +23,7 @@ export const getParsedUsers = async (): Promise<User[]> => {
 				});
 				users.push(user);
 			})
-			.on("end", (rowCount: number) => {
-				console.log(`Parsed ${rowCount} rows`);
+			.on("end", () => {
 				resolve(users);
 			});
 	});

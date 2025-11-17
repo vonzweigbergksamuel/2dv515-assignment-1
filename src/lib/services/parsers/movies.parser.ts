@@ -28,8 +28,7 @@ export const getParsedMovies = (): Promise<Movie[]> => {
 				});
 				movies.push(movie);
 			})
-			.on("end", (rowCount: number) => {
-				console.log(`Parsed ${rowCount} rows`);
+			.on("end", () => {
 				resolve(movies);
 			});
 	});

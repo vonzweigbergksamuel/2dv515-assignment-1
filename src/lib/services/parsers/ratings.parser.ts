@@ -25,8 +25,7 @@ export const getParsedRatings = async (): Promise<Rating[]> => {
 				});
 				ratings.push(rating);
 			})
-			.on("end", (rowCount: number) => {
-				console.log(`Parsed ${rowCount} rows`);
+			.on("end", () => {
 				resolve(ratings);
 			});
 	});

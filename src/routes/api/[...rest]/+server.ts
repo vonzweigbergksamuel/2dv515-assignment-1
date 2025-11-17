@@ -19,9 +19,9 @@ const openApiHandler = new OpenAPIHandler(appRouter, {
 		}),
 		new LoggingHandlerPlugin({
 			logger,
-			generateId: () => crypto.randomUUID(),
-			logRequestResponse: true,
-			logRequestAbort: true
+			generateId: () => crypto.randomUUID()
+			// logRequestResponse: true,
+			// logRequestAbort: true
 		})
 	],
 	interceptors: [
@@ -35,9 +35,9 @@ const rpcHandler = new RPCHandler(appRouter, {
 	plugins: [
 		new LoggingHandlerPlugin({
 			logger,
-			generateId: () => crypto.randomUUID(),
-			logRequestResponse: true,
-			logRequestAbort: true
+			generateId: () => crypto.randomUUID()
+			// logRequestResponse: true,
+			// logRequestAbort: true
 		})
 	]
 });
