@@ -5,8 +5,50 @@ import { getEuclideanSimilarity } from "$lib/utils/euclidean-distance";
 import z from "zod";
 import { publicProcedure } from "..";
 
+const userSimilarityOutputSchema = z.object({
+	userId: z.number(),
+	name: z.string(),
+	similarity: z
+		.object({
+			userId: z.number(),
+			name: z.string(),
+			similarity: z.number()
+		})
+		.array()
+});
+
 export const recommendationsRouter = {
-	recommendations: publicProcedure
+	userSimilarity: publicProcedure
+		.route({ method: "GET" })
+		.input(z.object({ userId: z.string(), amountOfUsers: z.string() }))
+		.output(userSimilarityOutputSchema)
+		.handler(async ({ input }) => {
+			const selectedUserId = Number(input.userId);
+			const amountOfUsers = Number(input.amountOfUsers);
+
+			const users = await getParsedUsers();
+			const allRatings = await getParsedRatings();
+			const similarityList: { userId: number; name: string; similarity: number }[] = [];
+
+			for (const user of users) {
+				if (user.userId === selectedUserId) continue;
+
+				const similarity = Number(
+					getEuclideanSimilarity(allRatings, selectedUserId, user.userId).toFixed(4)
+				);
+				similarityList.push({ userId: user.userId, name: user.name, similarity });
+			}
+
+			const sortedSimilarityList = similarityList.sort((a, b) => b.similarity - a.similarity);
+
+			return {
+				userId: selectedUserId,
+				name: users.find((user) => user.userId === selectedUserId)?.name ?? "",
+				similarity: sortedSimilarityList.slice(0, amountOfUsers)
+			};
+		}),
+
+	movieRecommendations: publicProcedure
 		.route({ method: "GET" })
 		.output(z.object({ movies: movieSchema.array() }))
 		.handler(async () => {
