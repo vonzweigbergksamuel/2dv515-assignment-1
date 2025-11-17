@@ -1,3 +1,4 @@
+import { ORPCError } from "@orpc/client";
 import { getParsedMovies, movieSchema } from "$lib/services/parsers/movies.parser";
 import { getParsedRatings } from "$lib/services/parsers/ratings.parser";
 import { getParsedUsers } from "$lib/services/parsers/users.parser";
@@ -27,6 +28,11 @@ export const recommendationsRouter = {
 			const amountOfUsers = Number(input.amountOfUsers);
 
 			const users = await getParsedUsers();
+
+			if (!users.find((user) => user.userId === selectedUserId)) {
+				throw new ORPCError("BAD_REQUEST", { message: "User not found" });
+			}
+
 			const allRatings = await getParsedRatings();
 			const similarityList: { userId: number; name: string; similarity: number }[] = [];
 
