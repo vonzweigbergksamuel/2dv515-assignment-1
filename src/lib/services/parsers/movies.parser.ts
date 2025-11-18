@@ -17,7 +17,7 @@ export const getParsedMovies = (): Promise<Movie[]> => {
 	const movies: Movie[] = [];
 
 	return new Promise((resolve, reject) => {
-		fs.createReadStream(path.resolve("datasets", "movies", "movies.example.csv"))
+		fs.createReadStream(path.resolve("datasets", "movies", "movies.csv"))
 			.pipe(csv.parse({ headers: true, delimiter: ";" }))
 			.on("error", (error) => reject(error))
 			.on("data", (row: { MovieId: string; Title: string; Year: string }) => {

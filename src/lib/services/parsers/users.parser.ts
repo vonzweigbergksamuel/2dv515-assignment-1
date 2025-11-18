@@ -13,7 +13,7 @@ export const getParsedUsers = async (): Promise<User[]> => {
 	const users: User[] = [];
 
 	return new Promise((resolve, reject) => {
-		fs.createReadStream(path.resolve("datasets", "movies", "users.example.csv"))
+		fs.createReadStream(path.resolve("datasets", "movies", "users.csv"))
 			.pipe(csv.parse({ headers: true, delimiter: ";" }))
 			.on("error", (error) => reject(error))
 			.on("data", (row: { UserId: string; Name: string }) => {
