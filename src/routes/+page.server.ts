@@ -23,12 +23,26 @@ export const actions = {
 		}
 	},
 	movieRecommendations: async ({ request }) => {
-		console.log("movieRecommendations");
-		const formData = await request.formData();
-		const userId = formData.get("userId");
-		const amountOfMovies = formData.get("amountOfMovies");
+		try {
+			const formData = await request.formData();
+			const userId = formData.get("userId");
+			const amountOfMovies = formData.get("amountOfMovies") || "3";
 
-		console.log("userId", userId);
-		console.log("amountOfMovies", amountOfMovies);
+			if (!userId) {
+				return fail(400, { error: "User ID is required" });
+			}
+
+			const movieRecommendations = await orpc.movieRecommendations.call({
+				userId: String(userId),
+				amountOfMovies: String(amountOfMovies)
+			});
+
+			return {
+				movieRecommendations
+			};
+		} catch (error) {
+			console.error(error);
+			return fail(500, { error: "Failed to get movie recommendations" });
+		}
 	}
 } satisfies Actions;
