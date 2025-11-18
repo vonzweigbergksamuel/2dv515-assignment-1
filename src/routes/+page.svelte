@@ -29,7 +29,8 @@
 					<option value={user.userId}>{user.name}</option>
 				{/each}
 			</select>
-			<select name="amountOfUsers" value="3">
+			<select name="amountOfUsers" required value={3}>
+				<option value="">Select amount of users</option>
 				{#each amount as amount}
 					<option value={amount}>{amount}</option>
 				{/each}
@@ -40,16 +41,16 @@
 			<table>
 				<thead>
 					<tr>
-						<th>Name</th>
 						<th>User ID</th>
+						<th>Name</th>
 						<th>Similarity</th>
 					</tr>
 				</thead>
 				<tbody>
 					{#each similarUsers as similarity}
 						<tr>
-							<td>{similarity.name}</td>
 							<td>{similarity.userId}</td>
+							<td>{similarity.name}</td>
 							<td>{similarity.similarity}</td>
 						</tr>
 					{/each}
@@ -73,7 +74,8 @@
 					<option value={user.userId}>{user.name}</option>
 				{/each}
 			</select>
-			<select name="amountOfMovies" value="3">
+			<select name="amountOfMovies" required value={3}>
+				<option value="">Select amount of movies</option>
 				{#each amount as amount}
 					<option value={amount}>{amount}</option>
 				{/each}
