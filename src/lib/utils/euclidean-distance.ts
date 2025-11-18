@@ -49,5 +49,3 @@ export function getEuclideanSimilarity(allRatings: Ratings[], userId1: number, u
 
 	return calculateEuclideanDistance(user1Ratings, user2Ratings);
 }
-
-export function getRecommendedMovies(allRatings: Ratings[], userId: number) {}
